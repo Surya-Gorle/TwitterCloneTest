@@ -1,0 +1,76 @@
+﻿@model TCloneApp.Models.User
+
+@{
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/_TCloneHomeLayout.cshtml";
+}
+
+<h2>@Model.DisplayName Edit Page</h2>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="~/Styles/CustomStyles.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.timeago.js" type="text/javascript"></script>
+<script src="~/Scripts/custom-validator.js" type="text/javascript"></script>
+@using (Html.BeginForm("ChangeUser", "Profile", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            <input type="button" id="btnEdtPwd" class="btn btn-default form-control col-md-2 fntCustom"
+                   value="Edit Password" />
+
+            <div class="col-md-10">
+                &emsp;
+                @Html.TextBox("pwdVal", "", new { @class = "form-control col-md-10 fntCustom", @style = "visibility:hidden" })
+                @*<input type="text" style="visibility:hidden" class="form-control" value="" id="pwdVal" />*@
+                @Html.Hidden("UsrID", Model.ID.ToString())
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label fntEdt col-md-2" })
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" name="submitButton" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Exit from Application" name="submitButton" id="btnExit" class="btn btn-danger" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Home", "Home", "UserHome", Model, new { @class = "fntcs" })
+</div>

@@ -1,0 +1,124 @@
+﻿body {
+    background: url('../Assets/imgFlyBirds.jpg');
+    padding: 50px;
+    height:auto;
+    width:auto;
+}
+
+#login-dp {
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow: hidden;
+    background-color: rgba(255,255,255,.8);
+}
+
+    #login-dp .help-block {
+        font-size: 12px
+    }
+
+    #login-dp .bottom {
+        background-color: rgba(255,255,255,.8);
+        border-top: 1px solid #ddd;
+        clear: both;
+        padding: 14px;
+    }
+
+    #login-dp .social-buttons {
+        margin: 12px 0
+    }
+
+        #login-dp .social-buttons a {
+            width: 49%;
+        }
+
+    #login-dp .form-group {
+        margin-bottom: 10px;
+    }
+
+.btn-fb {
+    color: #fff;
+    background-color: #3b5998;
+}
+
+    .btn-fb:hover {
+        color: #fff;
+        background-color: #496ebc
+    }
+
+.btn-tw {
+    color: #fff;
+    background-color: #55acee;
+}
+
+    .btn-tw:hover {
+        color: #fff;
+        background-color: #59b5fa;
+    }
+
+@media(max-width:768px) {
+    #login-dp {
+        background-color: inherit;
+        color: #fff;
+    }
+
+        #login-dp .bottom {
+            background-color: inherit;
+            border-top: 0 none;
+        }
+}
+.backtoLogin{
+    color:black;
+}
+
+.h7 {
+    font-size: 0.8rem;
+}
+
+.gedf-wrapper {
+    margin-top: 0.97rem;
+}
+
+@media (min-width: 1500px) {
+    .gedf-main {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+
+    .gedf-card {
+        width:100%;
+        margin-bottom: 2.77rem;
+    }
+}
+
+/**Reset Bootstrap*/
+.dropdown-toggle::after {
+    content: none;
+    display: none;
+}
+.fntCustom{
+    font-size:small;
+}
+.fntcs{
+    font-size:medium;
+    color:black;
+    text-decoration:underline;
+    text-decoration-color:black;
+}
+.cstm{
+    margin-left:80%;
+    margin-right:20%;
+}
+.edtLink{
+    text-align:center;
+}
+.fntlnk{
+    color:whitesmoke;
+    text-decoration:underline;
+    text-decoration-color:black;
+    text-align:right;
+    font-size:small;
+}
+.fntEdt {
+    font-size: small;
+}
+

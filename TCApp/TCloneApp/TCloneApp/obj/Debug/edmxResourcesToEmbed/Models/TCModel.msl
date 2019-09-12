@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TCAppEntitiesStoreContainer" CdmEntityContainer="TCAppModel">
+    <EntitySetMapping Name="TweetDetails">
+      <EntityTypeMapping TypeName="TCAppEntities.TweetDetail">
+        <MappingFragment StoreEntitySet="TweetDetails">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="Updated" ColumnName="Updated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="User_Following">
+      <EntityTypeMapping TypeName="TCAppEntities.User_Following">
+        <MappingFragment StoreEntitySet="User_Following">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+          <ScalarProperty Name="FollowingUser_ID" ColumnName="FollowingUser_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="TCAppEntities.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Joined" ColumnName="Joined" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetAllDetails" FunctionName="TCAppEntities.Store.GetAllDetails">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TCAppEntities.GetAllDetails_Result">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Joined" ColumnName="Joined" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="EditTweet" FunctionName="TCAppEntities.Store.EditTweet" />
+    <FunctionImportMapping FunctionImportName="InsertTweet" FunctionName="TCAppEntities.Store.InsertTweet" />
+    <FunctionImportMapping FunctionImportName="GetAllTweets" FunctionName="TCAppEntities.Store.GetAllTweets">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TCAppEntities.GetAllTweets_Result">
+          <ScalarProperty Name="Tweet_ID" ColumnName="Tweet_ID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="Updated" ColumnName="Updated" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetFollowersList" FunctionName="TCAppEntities.Store.GetFollowersList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TCAppEntities.GetFollowersList_Result">
+          <ScalarProperty Name="BaseUserID" ColumnName="BaseUserID" />
+          <ScalarProperty Name="FollowingUser_ID" ColumnName="FollowingUser_ID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetFollowingList" FunctionName="TCAppEntities.Store.GetFollowingList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TCAppEntities.GetFollowingList_Result">
+          <ScalarProperty Name="BaseUserID" ColumnName="BaseUserID" />
+          <ScalarProperty Name="FollowingUser_ID" ColumnName="FollowingUser_ID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

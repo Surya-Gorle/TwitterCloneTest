@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TCAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TweetDetails">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="User_ID" Type="int" Nullable="false" />
+    <Property Name="Message" Type="varchar" MaxLength="140" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="User_Following">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="User_ID" Type="int" Nullable="false" />
+    <Property Name="FollowingUser_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserPassword" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserFullName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="UserUserDisplayName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="UserEmail" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="JoinDate" Type="datetime" Nullable="false" />
+    <Property Name="ActiveFlag" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__TweetDeta__User___173876EA">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="TweetDetails" Type="Self.TweetDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TweetDetails">
+        <PropertyRef Name="User_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__User_Foll__Follo__145C0A3F">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="User_Following" Type="Self.User_Following" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="User_Following">
+        <PropertyRef Name="FollowingUser_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__User_Foll__User___1367E606">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="User_Following" Type="Self.User_Following" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="User_Following">
+        <PropertyRef Name="User_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="DeleteTweet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TweetID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="EditTweet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TweetID" Type="int" Mode="In" />
+    <Parameter Name="Message" Type="varchar(max)" Mode="In" />
+  </Function>
+  <Function Name="GetAllDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetAllTweets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetFollowersList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetFollowingList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="InsertTweet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserID" Type="int" Mode="In" />
+    <Parameter Name="Message" Type="varchar(max)" Mode="In" />
+  </Function>
+  <EntityContainer Name="TCAppModelStoreContainer">
+    <EntitySet Name="TweetDetails" EntityType="Self.TweetDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User_Following" EntityType="Self.User_Following" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__TweetDeta__User___173876EA" Association="Self.FK__TweetDeta__User___173876EA">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TweetDetails" EntitySet="TweetDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__User_Foll__Follo__145C0A3F" Association="Self.FK__User_Foll__Follo__145C0A3F">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="User_Following" EntitySet="User_Following" />
+    </AssociationSet>
+    <AssociationSet Name="FK__User_Foll__User___1367E606" Association="Self.FK__User_Foll__User___1367E606">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="User_Following" EntitySet="User_Following" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
