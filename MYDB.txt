@@ -1,0 +1,334 @@
+USE [PMDB]
+GO
+/****** Object:  User [NT AUTHORITY\SYSTEM]    Script Date: 9/27/2019 6:35:24 AM ******/
+CREATE USER [NT AUTHORITY\SYSTEM] FOR LOGIN [NT AUTHORITY\SYSTEM] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  StoredProcedure [dbo].[GetPMUserID]    Script Date: 9/27/2019 6:35:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetPMUserID]
+
+@ProjectID int
+as 
+BEGIN
+select USERID as ManagerID FROM USERS WHERE PROJECTID = @ProjectID 
+
+END
+GO
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[UpdatePMParentTask]    Script Date: 9/27/2019 6:35:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[UpdatePMParentTask]
+
+@TaskID int,
+@ParentTaskID int
+as 
+BEGIN
+UPDATE TASK SET ParentTaskID = @ParentTaskID WHERE TaskID = @TaskID
+
+END
+GO
+
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[UpdatePMProject]    Script Date: 9/27/2019 6:35:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[UpdatePMProject]
+
+@TaskID int,
+@ProjectID int
+
+as 
+
+BEGIN
+
+UPDATE Task SET ProjectID = @ProjectID WHERE TaskID = @TaskID
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[UpdatePMUser]    Script Date: 9/27/2019 6:35:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[UpdatePMUser]
+
+
+
+@UserID int,
+@ProjectID int
+
+as 
+
+BEGIN
+UPDATE USERS SET PROJECTID = @ProjectID WHERE USERID = @UserID
+END
+
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[UpdatePMUserIDforTask]    Script Date: 9/27/2019 6:35:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[UpdatePMUserIDforTask]
+
+@UserID int,
+@TaskID int
+
+as 
+
+BEGIN
+
+UPDATE USERS SET TaskID = @TaskID WHERE USERID = @UserID
+
+END
+
+GO
+
+
+
+
+
+/****** Object:  Table [dbo].[tblParentTask]    Script Date: 9/27/2019 6:35:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[tblParentTask](
+	[ParentID] [int] IDENTITY(1,1) NOT NULL,
+	[ParentTaskDesc] [varchar](max) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ParentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+/****** Object:  Table [dbo].[Project]    Script Date: 9/27/2019 6:35:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[tblProject](
+	[ProjectID] [int] IDENTITY(1,1) NOT NULL,
+	[ProjectDesc] [varchar](max) NOT NULL,
+	[ProjStartDate] [datetime] NULL,
+	[ProjEndDate] [datetime] NULL,
+	[ProjPriority] [int] NOT NULL,
+	[ProjCompleted] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ProjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+
+
+/****** Object:  Table [dbo].[tblTask]    Script Date: 9/27/2019 6:35:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[tblTask](
+	[TaskID] [int] IDENTITY(1,1) NOT NULL,
+	[ProjectID] [int] NULL,
+	[TaskDesc] [varchar](max) NOT NULL,
+	[tskStartDate] [datetime] NULL,
+	[tskEndDate] [datetime] NULL,
+	[tskPriority] [int] NOT NULL,
+	[tskCompleted] [bit] NULL,
+	[ParentTaskID] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[TaskID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+/****** Object:  Table [dbo].[tblUsers]    Script Date: 9/27/2019 6:35:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[tblUsers](
+	[UserID] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](max) NOT NULL,
+	[LastName] [varchar](max) NOT NULL,
+	[EmployeeID] [int] NOT NULL,
+	[TaskID] [int] NULL,
+	[ProjectID] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[UserID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+SET IDENTITY_INSERT [dbo].[tblParentTask] ON 
+
+GO
+INSERT [dbo].[tblParentTask] ([ParentID], [ParentTaskDesc]) VALUES (1, N'ParentTask1')
+GO
+INSERT [dbo].[tblParentTask] ([ParentID], [ParentTaskDesc]) VALUES (2, N'ParentTask2')
+GO
+INSERT [dbo].[tblParentTask] ([ParentID], [ParentTaskDesc]) VALUES (3, N'ParentTask3')
+GO
+INSERT [dbo].[tblParentTask] ([ParentID], [ParentTaskDesc]) VALUES (1004, N'')
+GO
+SET IDENTITY_INSERT [dbo].[tblParentTask] OFF
+GO
+
+
+
+SET IDENTITY_INSERT [dbo].[tblProject] ON 
+
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (1, N'TestProject1', CAST(0x0000AAB70062AFC4 AS DateTime), CAST(0x0000ACA300000000 AS DateTime), 30, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (2, N'Project2', CAST(0x0000AAB70062B6EF AS DateTime), CAST(0x0000ACA300000000 AS DateTime), 24, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (3, N'Project3', CAST(0x0000AAB70062C3DC AS DateTime), CAST(0x0000AF7D00000000 AS DateTime), 30, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (1004, N'Project 5', CAST(0x0000AAB700735B40 AS DateTime), CAST(0x0000AAB800735B40 AS DateTime), 4, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (1005, N'Project7', CAST(0x0000AAB70062AFC3 AS DateTime), CAST(0x0000AAB80062AFC3 AS DateTime), 4, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (1006, N'Project 8', CAST(0x0000AAB70062AFC4 AS DateTime), CAST(0x0000AAB90062AFC4 AS DateTime), 4, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (1007, N'ksala', NULL, NULL, 0, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (1008, N'Project0', CAST(0x0000AAB70062AFC3 AS DateTime), CAST(0x0000AAB80062AFC3 AS DateTime), 5, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (1009, N'Project00', CAST(0x0000AAB70062AFC3 AS DateTime), CAST(0x0000AAB80062AFC3 AS DateTime), 4, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (1010, N'Project56', CAST(0x0000AAB70062AFC3 AS DateTime), CAST(0x0000AAB80062AFC3 AS DateTime), 3, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (1011, N'kk', NULL, NULL, 0, NULL)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (1012, N'Test_Project', NULL, NULL, 10, 0)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (2011, N'Test_Project', NULL, NULL, 10, 0)
+GO
+INSERT [dbo].[tblProject] ([ProjectID], [ProjectDesc], [ProjStartDate], [ProjEndDate], [ProjPriority], [ProjCompleted]) VALUES (2012, N'Test_Project', NULL, NULL, 10, 0)
+GO
+SET IDENTITY_INSERT [dbo].[tblProject] OFF
+GO
+
+
+
+
+SET IDENTITY_INSERT [dbo].[tblTask] ON 
+
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (2, 2, N'TestTask2', CAST(0x0000AA4400000000 AS DateTime), CAST(0x0000AABF00651DA2 AS DateTime), 3, 0, 2)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (3, 2, N'Task2', CAST(0x0000AA4400000000 AS DateTime), CAST(0x0000AABF0066E929 AS DateTime), 3, 1, NULL)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (4, 3, N'Task3', CAST(0x0000AA4400000000 AS DateTime), CAST(0x0000AABF0066FD25 AS DateTime), 6, 1, 1)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (1002, NULL, N'Task4', CAST(0x0000AAB70062AFC3 AS DateTime), CAST(0x0000AAB80062AFC3 AS DateTime), 10, 1, NULL)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (1008, 1004, N'Task7', CAST(0x0000AAB70062AFC3 AS DateTime), CAST(0x0000AAB80062AFC3 AS DateTime), 9, 0, NULL)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (1010, 2, N'Task8', CAST(0x0000AAB70062AFC3 AS DateTime), CAST(0x0000AAB80062AFC3 AS DateTime), 11, 0, NULL)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (1011, 1005, N'task0', CAST(0x0000AAB70062AFC3 AS DateTime), CAST(0x0000AAB80062AFC3 AS DateTime), 10, 0, 3)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (1012, 1008, N'Task9', CAST(0x0000AAB70062AFC3 AS DateTime), CAST(0x0000AAB80062AFC3 AS DateTime), 11, 0, 1)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (1013, 1, N'Task08', NULL, NULL, 10, 0, 2)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (1015, NULL, N'Task00', NULL, NULL, 0, 0, NULL)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (1016, 1004, N'Task09', NULL, NULL, 0, 0, NULL)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (1017, 2, N'task89', CAST(0x0000AAB70062AFC3 AS DateTime), CAST(0x0000AAB80062AFC3 AS DateTime), 3, 0, 2)
+GO
+INSERT [dbo].[tblTask] ([TaskID], [ProjectID], [TaskDesc], [tskStartDate], [tskEndDate], [tskPriority], [tskCompleted], [ParentTaskID]) VALUES (2014, NULL, N'Test_Task', NULL, NULL, 12, 0, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[tblTask] OFF
+GO
+
+
+
+
+GO
+SET IDENTITY_INSERT [dbo].[tblUsers] ON 
+
+GO
+INSERT [dbo].[tblUsers] ([UserID], [FirstName], [LastName], [EmployeeID], [TaskID], [ProjectID]) VALUES (1, N'TestUser1', N'sss', 88, NULL, NULL)
+GO
+INSERT [dbo].[tblUsers] ([UserID], [FirstName], [LastName], [EmployeeID], [TaskID], [ProjectID]) VALUES (2, N'SUFN', N'SULN', 123, 2, 1003)
+GO
+INSERT [dbo].[tblUsers] ([UserID], [FirstName], [LastName], [EmployeeID], [TaskID], [ProjectID]) VALUES (2003, N'LSS', N'LSS', 5456, 1005, 1)
+GO
+INSERT [dbo].[tblUsers] ([UserID], [FirstName], [LastName], [EmployeeID], [TaskID], [ProjectID]) VALUES (2004, N'LAA', N'AA', 777, 1011, 1008)
+GO
+INSERT [dbo].[tblUsers] ([UserID], [FirstName], [LastName], [EmployeeID], [TaskID], [ProjectID]) VALUES (2005, N'Lksj', N'sasa', 784, 1006, NULL)
+GO
+INSERT [dbo].[tblUsers] ([UserID], [FirstName], [LastName], [EmployeeID], [TaskID], [ProjectID]) VALUES (2006, N'abcd', N'cbc', 555, NULL, NULL)
+GO
+INSERT [dbo].[tblUsers] ([UserID], [FirstName], [LastName], [EmployeeID], [TaskID], [ProjectID]) VALUES (2007, N'SArma', N'Lanka', 11, NULL, NULL)
+GO
+INSERT [dbo].[tblUsers] ([UserID], [FirstName], [LastName], [EmployeeID], [TaskID], [ProjectID]) VALUES (2008, N'first', N'two', 9898, NULL, NULL)
+GO
+INSERT [dbo].[tblUsers] ([UserID], [FirstName], [LastName], [EmployeeID], [TaskID], [ProjectID]) VALUES (3007, N'Test_FirstName', N'Test_LastName', 525, NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[tblUsers] OFF
+GO
+
+
+
+ALTER TABLE [dbo].[tblProject] ADD  DEFAULT ((0)) FOR [projCompleted]
+GO
+ALTER TABLE [dbo].[tblTask] ADD  DEFAULT ((0)) FOR [tskCompleted]
+GO
+ALTER TABLE [dbo].[tblTask]  WITH CHECK ADD FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[tblProject] ([ProjectID])
+GO
